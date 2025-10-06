@@ -87,10 +87,12 @@ table {
 
 
 th, td {
-    border: 1px solid #ddd;
-    padding: 12px 15px;
-    word-wrap: break-word;
-    white-space: normal; /* teks panjang otomatis turun ke bawah */
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.95rem;
+  white-space: normal;
 }
 
 /* Hanya header yang dibuat tidak turun baris */
