@@ -74,6 +74,14 @@ tbody tr:hover {
   background: #999;
 }
 
+h1 {
+    font-size: 1.8rem;
+    color: #005f73;
+    padding-bottom: 1rem;
+    margin: 0;
+    text-align: center;
+}
+
 .search-wrapper {
     padding-bottom: 1.5rem;
 }
@@ -101,3 +109,4 @@ tbody tr:hover {
     padding: 6px 8px;
   }
 }
+
