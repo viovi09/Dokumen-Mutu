@@ -112,7 +112,7 @@ thead {
     position: sticky;
     top: 0; 
     z-index: 5;
-    background-color: #005f73;
+    background-color: ##]172154;
     color: white;
 }
 
@@ -139,4 +139,5 @@ tbody tr:hover {
     padding: 2rem;
     color: #888;
 }
+
 
