@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Dokumen Mutu</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+    <div class="container" x-data="documentTable()">
+        <header>
+            <img src="header.jpg" alt="Header" class="header-image">
+        </header>
+        
+        <div class="sticky-controls">
+            <h1>Daftar Dokumen Mutu</h1>
+            <div class="search-wrapper">
+                <input 
+                    type="text" 
+                    x-model="search"
+                    placeholder="Cari berdasarkan kata kunci apapun..."
+                    class="search-input"
+                    aria-label="Search documents">
+            </div>
+        </div>
+
+        <main>
+            <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Dokumen Mutu</th>
+                        <th>Nama Dokumen</th>
+                        <th>Proses</th>
+                        <th>Atribut</th>
+                        <th>Waktu</th>
+                        <th>Otorisasi</th>
+                        <th>Tujuan Nadine</th>
+                        <th>Tembusan Nadine</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <template x-for="item in filteredDocuments" :key="item.kode">
+                        <tr>
+                            <td x-text="item.kode"></td>
+                            <td x-text="item.dokumenMutu"></td>
+                            <td x-text="item.namaDokumen"></td>
+                            <td x-text="item.proses"></td>
+                        <td x-html="
+                            item.atribut
+                              .replace(/;\s*/g, ';<br>')
+                              .replace(/\n/g, '<br>')
+                          .replace(/(\d\))/g, '<br>$1')
+                        "></td>  
+                            <td x-text="item.waktu"></td>
+                            <td x-text="item.otorisasi"></td>
+                            <td x-text="item.tujuanNadine"></td>
+                            <td x-text="item.tembusanNadine"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            </div>
+
+            <div x-show="filteredDocuments.length === 0" class="no-results">
+                <p>Data tidak ditemukan.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function documentTable() {
+            return {
+                search: '',
+                list: [
+                    { kode: '01', dokumenMutu: 'Ya', namaDokumen: 'Notula Rapat Pembahasan Desain Pembelajaran Akhir/Final', proses: 'Desain', atribut: "a. Hari dan tanggal kegiatan;\nb. Nama peserta rapat, jabatan, dan unit kerja; dan\nc. Poin-poin hasil diskusi/pembahasan", waktu: 'Disusun dan dilaporkan kepada Kepala Pusdiklat paling lambat 5 (lima) hari kerja setelah rapat pembahasan terakhir/final', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Kepala Pusdiklat, SGO, SME, Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '01a', dokumenMutu: 'Tidak', namaDokumen: 'Berita Acara Validasi Desain Pembelajaran', proses: 'Desain', atribut: '-', waktu: '', otorisasi: 'Ketua Tim Penjaminan Kualitas dan Validator', tujuanNadine: 'Ketua Tim Kerja Pembelajaran', tembusanNadine: '-' },
+                    { kode: '02', dokumenMutu: 'Ya', namaDokumen: 'Kerangka Acuan Program', proses: 'Desain', atribut: "a. Nama program pembelajaran;\nb. Total JP;\nc. Lama hari;\nd. Tujuan pembelajaran;\ne. Kebutuhan strategis;\nf. Sasaran peserta;\ng. Model pembelajaran;\nh. Evaluasi pembelajaran\ni. Tingkatan program pembelajaran;\nj. Sumber belajar;\nk. Daftar mata pelajaran, meliputi:\n1) Nama mata pelajaran2) Standar kompetensi dan kompetensi dasar3) JP4) Jam tatap muka/non tatap muka\n\nl. Urutan/sekuensial;\nm. Persyaratan peserta;\nn. Metode Pengajaran;\no. Kualifikasi pengajar; dan\np. Informasi lainnya", waktu: "AKP Reguler:\nDisusun dan disampaikan kepada Pihak Terkait paling lambat 20 hari kerja sebelum penyelenggaraan pembelajaran\n\nAKP Insidental:\nDisusun dan disampaikan kepada Pihak Terkait paling lambat 7 (tujuh) hari kerja sebelum penyelenggaraan pembelajaran", otorisasi: 'Kepala Pusdiklat', tujuanNadine: 'SGO, SME, Kabid PMP, Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    // ... Masukkan sisa data Anda di sini
+                    { kode: '03', dokumenMutu: 'Ya', namaDokumen: 'Skenario Pembelajaran', proses: 'Desain', atribut: "a. Standar kompetensi dan kompetensi dasar; b. Aktivitas belajar; c. Penugasan/evaluasi aktivitas; d. Media pembelajaran; e. Waktu; dan f. Hari", waktu: 'AKP Reguler: Disusun dan disampaikan kepada Pihak Terkait paling lambat 20 hari kerja sebelum penyelenggaraan pembelajaranAKP Insidental: Disusun dan disampaikan kepada Pihak Terkait paling lambat 7 (tujuh) hari kerja sebelum penyelenggaraan pembelajaran', otorisasi: 'Kepala Pusdiklat', tujuanNadine: 'SGO, SME, Kabid PMP, Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '04', dokumenMutu: 'Ya', namaDokumen: 'Kerangka Naskah soal', proses: 'Desain', atribut: "a. Nama program pembelajaran; b. Mata pelajaran; c. Jenis ujiand. Alokasi waktu; e. Sifat soal; f. Standar kompetensi; g. Kompetensi dasar; h. Indikator pembelajaran; i. Bentuk soal; dan j. Jumlah butir soal.", waktu: 'AKP Reguler: Disusun dan disampaikan kepada Pihak Terkait paling lambat 20 hari kerja sebelum penyelenggaraan pembelajaranAKP Insidental: Disusun dan disampaikan kepada Pihak Terkait paling lambat 7 (tujuh) hari kerja sebelum penyelenggaraan pembelajaran', otorisasi: 'Kepala Pusdiklat', tujuanNadine: 'SGO, SME, Kabid PMP, Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '05', dokumenMutu: 'Ya', namaDokumen: 'Basis Data/Database Tenaga Pengajar (Sebelum tersedia DB dari MP)', proses: 'Desain', atribut: "a. Nama pengajar; b. NIP/NRP/NIK; c. Kontak pengajar; d. Unit kerja; e. Riwayat pekerjaan; f. Riwayat pendidikan; g. Riwayat keahlian khusus; h. Riwayat mengajar; dan i. Riwayat hasil evaluasi pengajar.", waktu: 'Diperbaharui dan disampaikan kepada Pihak Terkait paling lambat pada saat rapat persiapan penyelenggaraan pembelajaran', otorisasi: 'Kepala Pusdiklat', tujuanNadine: 'Unit asal pengajar/Ybs', tembusanNadine: 'Ketua Tim Penjaminan Kualitas' },
+                    { kode: '05a', dokumenMutu: 'Tidak', namaDokumen: 'ND Permohonan Pengajar', proses: 'Penyelenggaraan', atribut: "-", waktu: '-', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: ' - ', tembusanNadine: 'Ketua Tim Penjaminan Kualitas' },
+                    { kode: '06', dokumenMutu: 'Ya', namaDokumen: 'Sumber Belajar', proses: 'Pengembangan', atribut: "- Modul/Bahan Ajar/Bahan Tayang: a) Judul/materi; b) SK dan KD; c) Uraian materi; d) Latihan; dan e) Rangkuman- Bahan Peraga: Sesuai kebutuhan yang tercantum dalam KAP/skenario pembelajaran- Hipermedia: a) Petunjuk penggunaan; b) Layanan bantuan; c) Judul/materi; d) SK dan KD; e) Uraian materi; f) Latihan; dan g) Rangkuman- Media Sederhana atau Sumber Belajar Lain: a) SK dan KD; b) Uraian materi; dan c) Sumber referensi dari sumber belajar lain (terkait HAKI)", waktu: 'Tersedia paling lambat pada saat rapat persiapan penyelenggaraan pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '06a', dokumenMutu: 'Tidak', namaDokumen: 'ND Penyampaian Sumber Belajar', proses: 'Pengembangan', atribut: "-", waktu: '-', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '07', dokumenMutu: 'Ya', namaDokumen: 'Rancangan Naskah Soal', proses: 'Pengembangan', atribut: "a. Petunjuk pengerjaan soal;b. Soal ujian; c. Kunci jawaban", waktu: 'Tersedia paling lambat pada saat rapat persiapan penyelenggaraan pembelajaran', otorisasi: 'Penyusun Soal', tujuanNadine: 'Ketua Tim Kerja Pembelajaran, Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '08', dokumenMutu: 'Ya', namaDokumen: 'Hasil Validasi Rancangan Naskah Soal', proses: 'Pengembangan', atribut: "a. Aspek materi; b. Aspek konstruksi; dan c. Aspek bahasa", waktu: 'Tersedia paling lambat 1 (satu) hari kerja sebelum penyelenggaraan pembelajaran. Dalam hal dilakukan perbaikan atas catatan hasil validasi soal, ketersediaan soal paling lambat sebelum penyelenggaraan pembelajaran.', otorisasi: 'Validator Soal', tujuanNadine: 'Ketua Tim Kerja Pembelajaran, Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '09', dokumenMutu: 'Ya', namaDokumen: 'Skenario Evaluasi Pasca Pembelajaran Level 3', proses: 'Pengembangan', atribut: "a. Latar belakang, meliputi: 1) dasar pelaksanaan; dan 2) gambaran umum. b. Penerima manfaat; c. Rencana pelaksanaan, meliputi: 1) penetapan instrumen evaluasi 2) hasil pengujian instrumen evaluasi 3) rencana calon responden 4) rencana metode pengumpulan data 5) rencana metode analisis data d. lini masa pelaksanaan kegiatan ", waktu: 'Tersedia paling lambat pada saat rapat persiapan penyelenggaraan pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '10', dokumenMutu: 'Ya', namaDokumen: 'Skenario Evaluasi Pasca Pembelajaran Level 4', proses: 'Pengembangan', atribut: "a. Latar belakang, meliputi: 1) dasar pelaksanaan; dan 2) gambaran umum. b. Penerima manfaat; c. Rencana pelaksanaan, meliputi: 1) penetapan leading indicator 2) penetapan instrumen evaluasi 3) hasil pengujian instrumen evaluasi 4) rencana calon responden 5) rencana metode pengumpulan data 6) rencana metode analisis data d. lini masa pelaksanaan kegiata ", waktu: 'Tersedia paling lambat pada saat rapat persiapan penyelenggaraan pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '11', dokumenMutu: 'Ya', namaDokumen: 'Formulir Penilaian Validasi Program', proses: 'Pengembangan', atribut: "a. Aspek kesesuaian sumber belajar; b. Aspek proporsi teori dan praktik; dan c. Aspek kompetensi pengajar dengan sumber belajar yang disampaikan ", waktu: 'Tersedia paling lambat 1 (satu) hari kerja sebelum penyelenggaraan pembelajaran. Dalam hal dilakukan perbaikan atas catatan hasil validasi program, program pembelajaran yang diperbaiki tersedia paling lambat sebelum penyelenggaraan pembelajaran', otorisasi: 'Ketua Tim Penjaminan Kualitas', tujuanNadine: 'Ketua Tim Kerja Pembelajaran', tembusanNadine: 'Kepala Pusdiklat' },
+                    { kode: '11a', dokumenMutu: 'Tidak', namaDokumen: 'ND Formulir Penilaian Validasi Program (Sangat Layak/Layak)', proses: 'Pengembangan', atribut: "-", waktu: '-', otorisasi: 'Ketua Tim Penjaminan Kualitas', tujuanNadine: 'Ketua Tim Kerja Pembelajaran', tembusanNadine: 'Kepala Pusdiklat' },
+                    { kode: '11b', dokumenMutu: 'Tidak', namaDokumen: 'ND Formulir Penilaian Validasi Program (Tidak Layak)', proses: 'Pengembangan', atribut: "-", waktu: '-', otorisasi: 'Ketua Tim Penjaminan Kualitas', tujuanNadine: 'Ketua Tim Kerja Pembelajaran', tembusanNadine: 'Kepala Pusdiklat' },
+                    { kode: '12', dokumenMutu: 'Ya', namaDokumen: 'Formulir Hasil Uji Coba E-Learning', proses: 'Pengembangan', atribut: "a. Hasil uji coba pada aspek materi; b. Hasil uji coba pada aspek KAP; c. Hasil uji coba pada aspek kuis/penugasan; dan d. Rekomendasi (dalam hal diperlukan perbaikan).", waktu: '-', otorisasi: 'Ketua Tim Penjaminan Kualitas', tujuanNadine: 'Ketua Tim Kerja Pembelajaran', tembusanNadine: 'Kepala Pusdiklat' },
+//coba menggunakan Ai//
+                    { kode: '13', dokumenMutu: 'Ya', namaDokumen: 'Pengumuman Hasil Verifikasi Calon Peserta', proses: 'Penyelenggaraan', atribut: "a. Nama peserta;b. NIP/NRP/NIK; c. Unit kerja; dan d. Status/hasil verifikasi", waktu: 'Tersedia paling lambat pada saat rapat persiapan penyelenggaraan pembelajaran. Dalam hal nama calon peserta diterima setelah rapat persiapan penyelenggaraan, ketersediaan pengumuman paling lambat sebelum penyelenggaraan pembelajaran.', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'UE 1', tembusanNadine: 'Ketua Tim Penjaminan Kualitas' },
+                    { kode: '14', dokumenMutu: 'Ya', namaDokumen: 'Notula Rapat Persiapan Penyelenggaraan Pembelajaran', proses: 'Penyelenggaraan', atribut: "a. Hari dan tanggal kegiatan; b. Nama peserta rapat, jabatan, dan unit kerja; c. Poin-poin hasil kesepakatan akhir paling kurang meliputi: 1) Aktivitas pembelajaran 2) Konsep jadwal pembelajaran 3) Pengajar dan strategi pembelajaran 4) Ketersediaan/ kesiapan sumber belajar 5) Profil peserta 6) Ketersediaan/Permintaan sarpras pendukung 7) Skenario evaluasi pembelajaran", waktu: 'Rapat Persiapan dilaksanakan paling lambat 3 (tiga) hari kerja sebelum penyelenggaraan pembelajaran. Notula rapat tersedia paling lambat 1 (satu) hari kerja setelah Rapat Persiapan.', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '15', dokumenMutu: 'Ya', namaDokumen: 'Jadwal Pembelajaran', proses: 'Penyelenggaraan', atribut: "a. Hari dan tanggal pembelajaran; b. Waktu pembelajaran; c. Mata Pelajaran; d. JP; dan e. Nama pengajar", waktu: 'Tersedia paling lambat 2 (dua) hari kerja sebelum penyelenggaraan pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '16', dokumenMutu: 'Ya', namaDokumen: 'Informasi/Panduan Penyelenggaraan Pembelajaran', proses: 'Penyelenggaraan', atribut: "a. Informasi terkait desain pembelajaran; b. Informasi terkait ketentuan evaluasi pembelajaran; c. Informasi terkait jadwal pembelajaran; d. Informasi terkait hak dan kewajiban peserta; dan e. Informasi terkait kanal/narahubung penanganan keluhan", waktu: 'Tersedia dan disampaikan kepada peserta pembelajaran paling lambat 1 (satu) hari kerja sebelum penyelenggaraan pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '17', dokumenMutu: 'Ya', namaDokumen: 'Keputusan Penyelenggaraan Pembelajaran', proses: 'Penyelenggaraan', atribut: "a. Lampiran peserta pembelajaran (nama, NIP, unit kerja); b. Lampiran tenaga pengajar /penceramah /narasumber (mata pelajaran, JP, nama, unit kerja, status mengajar); c. Lampiran manajer kelas dan/atau petugas piket (nama, jabatan, frekuensi penugasan); d. Lampiran pembuat naskah ujian, pemeriksa hasil ujian, dan validator soal ujian penyusun soal (nama, jabatan) – jika ada; e. Lampiran pengamat /pengawas ujian (nama,jabatan, peran) – jika ada; f. Lampiran pendamping PKL (nama, jabatan) – jika ada; dan/atau g. Lampiran coach dan/atau mentor (nama, jabatan) –jika ada", waktu: 'Tersedia paling lambat sebelum penyelenggaraan pembelajaran. Dalam hal terdapat revisi, tersedia paling lambat pada tanggal terakhir pembelajaran.', otorisasi: 'Kepala Pusdiklat/KPA', tujuanNadine: 'Kepala Pusdiklat', tembusanNadine: 'Ketua Tim Penjaminan Kualitas' },
+                    { kode: '18', dokumenMutu: 'Ya', namaDokumen: 'Daftar Hadir Peserta', proses: 'Penyelenggaraan', atribut: "a. Nama pembelajaran; b. Nama mata Pelajaran; c. Tanggal/hari kegiatan; d. Nama peserta; e. NIP/NRP/NIK; f. Unit kerja; dan g. Tanda tangan/otorisasi peserta", waktu: 'Tersedia secara harian selama penyelenggaraan pembelajaran', otorisasi: 'Manajer Kelas/Petugas Piket/PIC E-learning', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '19', dokumenMutu: 'Ya', namaDokumen: 'Kartu Mengajar', proses: 'Penyelenggaraan', atribut: "a. Nama pembelajaran; b. Nama mata pelajaran; c. Tanggal/hari kegiatan; d. Nama pengajar; e .Tanda tangan/otorisasi pengajar", waktu: 'Tersedia secara harian selama penyelenggaraan pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '20', dokumenMutu: 'Ya', namaDokumen: 'Dokumentasi Kanal Penyampaian Keluhan Peserta', proses: 'Penyelenggaraan', atribut: "a. Daftar keluhan; b. Tanggal kejadian; c. Bentuk penanganan keluhan; d. Tanggal penanganan keluhan", waktu: 'Tersedia sepanjang proses pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '21', dokumenMutu: 'Ya', namaDokumen: 'Naskah Dinas terkait Pengembalian Peserta yang Tidak Berhak Melanjutkan Pembelajaran', proses: 'Penyelenggaraan', atribut: "a. (Nama peserta)  b.(NIP/NRP/NIK) c. Unit kerja; d. Alasan pengembalian", waktu: 'Tersedia dalam hal diperlukan untuk diterbitkan', otorisasi: 'Kepala Pusdiklat', tujuanNadine: 'UE 1', tembusanNadine: 'Ketua Tim Penjaminan Kualitas' },
+                    { kode: '22', dokumenMutu: 'Ya', namaDokumen: 'Rekap Kehadiran Peserta dan Pengajar Pembelajaran', proses: 'Penyelenggaraan', atribut: "a. Nama peserta; b. Nama pengajar; c. Nama mata pelajaran; d. Persentase kehadiran", waktu: 'Pembelajaran mempersyaratkan kelulusan: tersedia sebelum ujian Pembelajaran yang tidak mempersyaratkan kelulusan: tersedia pada tanggal terakhir pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '22a', dokumenMutu: 'Tidak', namaDokumen: 'ND Rekap Hadir, Kartu Mengajar, Rekap Keluhan, Hasil PrePost', proses: 'Penyelenggaraan', atribut: "-", waktu: '', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '22b', dokumenMutu: 'Tidak', namaDokumen: 'Surat Keterangan Mengajar', proses: 'Penyelenggaraan', atribut: "-", waktu: '', otorisasi: 'Kepala Pusdiklat', tujuanNadine: 'Ybs', tembusanNadine: '-' },
+                    { kode: '22c', dokumenMutu: 'Tidak', namaDokumen: 'Surat Perintah Kerja Lembur', proses: 'Penyelenggaraan', atribut: "-", waktu: 'Sebelum lembur dilakukan', otorisasi: 'Kepala Bidang/Ketua Tim Kerja', tujuanNadine: 'Kasubbag Tata Usaha', tembusanNadine: '-' },
+                    { kode: '23', dokumenMutu: 'Ya', namaDokumen: 'Daftar Honor Pengajar', proses: 'Penyelenggaraan', atribut: "a. Nama pengajar; b. Nama mata pelajaran; c. Jumlah JP; d. Nominal honor; e. Nomor NPWP; dan f. Tanda tangan/nomor rekening pengajar.", waktu: 'Disampaikan kepada Unit Jabatan Pengawas di lingkungan Pusdiklat yang mempunyai tugas pengelolaan keuangan paling lambat 5 (lima) hari kerja setelah tanggal terakhir pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Diunggah ke formulir pengajuan dafhon', tembusanNadine: '-' },
+                    { kode: '24', dokumenMutu: 'Ya', namaDokumen: 'Bukti Penyampaian/Bukti Transfer Honor Pengajar', proses: 'Penyelenggaraan', atribut: "a. Tanggal penyampaian; dan b. Nominal honor", waktu: 'Disampaikan kepada pengajar paling lambat 17 hari kerja setelah tanggal terakhir pembelajaran', otorisasi: 'Bendahara/Pengelola Keuangan', tujuanNadine: 'Diunggah ke folder bukti transfer honor', tembusanNadine: '-' },
+                    { kode: '25', dokumenMutu: 'Ya', namaDokumen: 'Pengumuman Hasil Pembelajaran (nonkelulusan)', proses: 'Penyelenggaraan', atribut: "a. Nama pembelajaran; b. Tanggal pelaksanaan; c. Nama peserta; d. NIP/NRP/NIK; e. Unit kerja; dan f. Jumlah JP setiap peserta", waktu: '10 hari kerja setelah tanggal terakhir pembelajaran', otorisasi: 'Kepala Pusdiklat', tujuanNadine: 'UE 1, peserta (jika memungkinkan)', tembusanNadine: 'Ketua Tim Penjaminan Kualitas' },
+                    { kode: '26', dokumenMutu: 'Ya', namaDokumen: 'Formulir Evaluasi Penyelenggaraan', proses: 'Evaluasi', atribut: "a. Nama pembelajaran; b. Butir penilaian; c. Skala penilaian aspek kepentingan; d. Skala penilaian aspek persepsi/kenyataan; dan e. Saran/masukan", waktu: 'Tersedia dan diisi peserta paling lambat pada tanggal terakhir pembelajaran', otorisasi: 'Manajer Kelas/Petugas Piket/PIC E-learning', tujuanNadine: '-', tembusanNadine: '-' },
+                    { kode: '27', dokumenMutu: 'Ya', namaDokumen: 'Rekap Hasil Evaluasi Penyelenggaraan', proses: 'Evaluasi', atribut: "a. Nama pembelajaran; b. Butir penilaian; c. Rata-rata nilai tiap butir; d. Kategori atas rata-rata nilai; dan e. Rekapitulasi saran/masukan", waktu: 'Tersedia sebelum penyusunan Matriks Tindak Lanjut atas Rekomendasi Pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '27a', dokumenMutu: 'Tidak', namaDokumen: 'Rekap Saran dan Masukan', proses: 'Evaluasi', atribut: "-", waktu: '', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '27b', dokumenMutu: 'Tidak', namaDokumen: 'Rekap Evaluasi Lainnya', proses: 'Evaluasi', atribut: "-", waktu: '', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '27c', dokumenMutu: 'Tidak', namaDokumen: 'ND Rekap Hasil Evaluasi Penyelenggaraan dan Pengajar', proses: 'Evaluasi', atribut: "-", waktu: '', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '28', dokumenMutu: 'Ya', namaDokumen: 'Formulir Evaluasi Pengajar', proses: 'Evaluasi', atribut: "a. Nama pembelajaran; b. Butir penilaian; c. Skala penilaian aspek ekspektasi/harapan; d. Skala penilaian aspek persepsi/kenyataan; dan e. Saran/masukan", waktu: 'Tersedia dan diisi peserta paling lambat pada tanggal terakhir pembelajaran', otorisasi: 'Manajer Kelas/Petugas Piket/PIC E-learning', tujuanNadine: '-', tembusanNadine: '-' },
+                    { kode: '29', dokumenMutu: 'Ya', namaDokumen: 'Rekap Hasil Evaluasi Pengajar', proses: 'Evaluasi', atribut: "a. Nama pembelajaran; b. Nama pengajar; c. Nama mata pelajaran; d. Rata-rata nilai tiap pengajar; e. Kategori atas rata-rata nilai; dan f. Rekapitulasi saran/masukan", waktu: 'Tersedia sebelum penyusunan Matriks Tindak Lanjut atas Rekomendasi Pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '29a', dokumenMutu: 'Tidak', namaDokumen: 'Hasil Evaluasi Pengajar (Per Pengajar)', proses: 'Evaluasi', atribut: "-", waktu: '', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '30', dokumenMutu: 'Ya', namaDokumen: 'Matriks Tindak Lanjut Atas Rekomendasi Pembelajaran', proses: 'Evaluasi', atribut: "a. Nama pembelajaran; b. Tanggal pembelajaran; c. Catatan hasil evaluasi kepuasan; d. Uraian rekomendasi; e. Rencana tindak lanjut; f. Target penyelesaian; g. Capaian tindak lanjut; dan h. Unit penanggung jawab", waktu: 'Tersedia paling lambat akhir bulan berikutnya setelah tanggal terakhir pembelajaran', otorisasi: 'Ketua Tim Penjaminan Kualitas', tujuanNadine: 'Kepala Pusdiklat', tembusanNadine: 'Kabid PMP, Ketua Tim Kerja Pembelajaran' },
+                    { kode: '31', dokumenMutu: 'Ya', namaDokumen: 'Daftar Hadir Ujian', proses: 'Evaluasi', atribut: "a. Nama pembelajaran;b. Tanggal kegiatan; c. Waktu kegiatan; dan d. Tanda tangan/otorisasi peserta", waktu: 'Tersedia pada saat pelaksanaan ujian', otorisasi: 'Manajer Kelas/Petugas Piket/PIC E-learning', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '32', dokumenMutu: 'Ya', namaDokumen: 'Lembar Kendali Pelaksanaan Ujian', proses: 'Evaluasi', atribut: "a. Nama pembelajaran; b. Tanggal kegiatan; c. Nama pengawas; d. NIP pengawas; e. Tanda tangan pengawas; dan f. Kondisi ujian", waktu: 'Tersedia pada saat pelaksanaan ujian', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '33', dokumenMutu: 'Ya', namaDokumen: 'Rekapitulasi Nilai', proses: 'Evaluasi', atribut: "Rekap Nilai Ujian: a. Nama pembelajaran; b. Tanggal penyelenggaraan; c. Nama peserta; d. Mata pelajaran; e. Nilai akhir dan komponen penilaiannya.Rekap nilai pre-test/post-test , a. Nama pembelajaran; b. Tanggal penyelenggaraan; c. Nama peserta; d. Nilai pre-test; e. Nilai post-test; dan f. Persentase kenaikan nilai", waktu: 'Rekap Nilai Ujian: Tersedia pada saat rapat kelulusan Rekap Nilai pre-test /post test: Tersedia pada saat penutupan pembelajaran', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas', tembusanNadine: '-' },
+                    { kode: '34', dokumenMutu: 'Ya', namaDokumen: 'Berita Acara Rapat Kelulusan', proses: 'Evaluasi', atribut: "a. Nama pembelajaran; b. Tanggal pelaksanaan; c. Nama peserta; d. Mata pelajaran; e. Nilai akhir dan komponen penilaiannya; f. Tanda tangan pengajar; g. Tanda tangan ketua tim kerja pembelajaran; dan h. Tanda tangan ketua tim penjaminan kualitas", waktu: 'Tersedia paling lambat 25 hari kerja setelah tanggal pembelajaran terakhir', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'Ketua Tim Penjaminan Kualitas, Pengajar', tembusanNadine: '-' },
+                    { kode: '35', dokumenMutu: 'Ya', namaDokumen: 'Pengumuman Hasil Pembelajaran (kelulusan)', proses: 'Evaluasi', atribut: "a. Nama pembelajaran; b. Tanggal pelaksanaan; c. Nama peserta; d. Jumlah JP masing-masing peserta; e. NIP/NRP/NIK; f. Unit kerja; dan g. Status kelulusan", waktu: 'Tersedia paling lambat 30 hari kerja setelah tanggal pembelajaran terakhir', otorisasi: 'Ketua Tim Kerja Pembelajaran', tujuanNadine: 'UE 1, peserta (jika memungkinkan)', tembusanNadine: 'Ketua Tim Penjaminan Kualitas' },
+                    { kode: '36', dokumenMutu: 'Ya', namaDokumen: 'Surat Keterangan Pembelajaran', proses: 'Evaluasi', atribut: "Format A dan Format B yang sesuai dengan template pada Aplikasi Manajemen Pembelajaran Format lainnya a. Nomor SKP; b. Nama peserta; c. Nama pembelajaran; d. Tanggal penyelenggaraan; e. Jumlah JP; dan f. Unit penyelenggara", waktu: 'Pembelajaran mempersyaratkan kelulusan: SKP Tersedia paling lambat 30 hari kerja setelah tanggal pembelajaran terakhir (yang diproses melalui tanda tangan elektronik)', otorisasi: 'Kepala Pusdiklat', tujuanNadine: '-', tembusanNadine: '-' },
+                    { kode: '37', dokumenMutu: 'Ya', namaDokumen: 'Laporan Evaluasi Pasca Pembelajaran (Level 3)', proses: 'Evaluasi', atribut: "a. Judul pembelajaran; b. Sumber data; c. Metode evaluasi; d. Instrumen evaluasi; e. Analisis data; f. Hasil evaluasi; dan g. Simpulan dan saran", waktu: 'Tersedia secara semesteran dan disampaikan kepada Sekretaris Badan paling lambat 10 hari kerja setelah semester berakhir', otorisasi: 'Kepala Pusdiklat', tujuanNadine: 'Sekretaris BPPK', tembusanNadine: 'Kabid PMP, Ketua Tim Kerja Pembelajaran, Ketua Tim Penjaminan Kualitas, Kabag OKI, Kasubbag PKRO' },
+                    { kode: '38', dokumenMutu: 'Ya', namaDokumen: 'Laporan Evaluasi Pasca Pembelajaran (Level 4)', proses: 'Evaluasi', atribut: "a. Judul pembelajaran; b. Sumber data; c. Metode evaluasi; d. Instrumen evaluasi; e. Hasil analisis data; dan f. Simpulan dan saran.", waktu: 'Tersedia secara semesteran dan disampaikan kepada Sekretaris Badan paling lama 10 hari kerja setelah semester berakhir', otorisasi: 'Kepala Pusdiklat', tujuanNadine: 'Sekretaris BPPK', tembusanNadine: 'Kabid PMP, Ketua Tim Kerja Pembelajaran, Ketua Tim Penjaminan Kualitas, Kabag OKI, Kasubbag PKRO' }
+                ],
+
+                get filteredDocuments() {
+                    if (!this.search) return this.list;
+                    const keyword = this.search.toLowerCase();
+                    return this.list.filter(item =>
+                        Object.values(item).some(value =>
+                            String(value).toLowerCase().includes(keyword)
+                        )
+                    );
+                }
+            }
+        }
+    </script>
+</body>
+</html>
